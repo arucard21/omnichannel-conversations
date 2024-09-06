@@ -1,4 +1,4 @@
-# Based on https://github.com/strimzi/strimzi-kafka-operator/blob/main/examples/kafka/kraft/kafka-single-node.yaml
+# # Based on https://github.com/strimzi/strimzi-kafka-operator/blob/main/examples/kafka/kraft/kafka-single-node.yaml (modified naming)
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaNodePool
 metadata:
