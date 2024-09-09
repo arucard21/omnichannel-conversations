@@ -8,8 +8,8 @@ repositories {
     mavenCentral()
 }
 
-sourceCompatibility = JavaVersion.VERSION_21
-targetCompatibility = JavaVersion.VERSION_21
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 dependencies {
 	providedCompile platform(group: 'jakarta.platform', name: 'jakarta.jakartaee-bom', version: '10.0.0')
