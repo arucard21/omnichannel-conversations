@@ -1,0 +1,56 @@
+plugins {
+    id 'war'
+    id 'eclipse-wtp'
+    id 'jvm-test-suite'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = JavaVersion.VERSION_21
+targetCompatibility = JavaVersion.VERSION_21
+
+dependencies {
+	providedCompile platform(group: 'jakarta.platform', name: 'jakarta.jakartaee-bom', version: '10.0.0')
+    providedCompile platform(group: "org.eclipse.microprofile", name: "microprofile", version: "6.1")
+    providedCompile group: "org.eclipse.microprofile", name: "microprofile"
+    providedCompile group: 'jakarta.persistence', name: 'jakarta.persistence-api'
+    providedCompile group: 'jakarta.transaction', name: 'jakarta.transaction-api'
+    
+	implementation platform(group: 'org.springframework.data', name: 'spring-data-bom', version: '2024.0.3')
+	implementation group: 'org.springframework.data', name: 'spring-data-jpa'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.24.0'
+	
+	runtimeOnly group: 'com.h2database', name: 'h2', version: '2.3.232'
+}
+
+testing.suites {
+    test {
+        useJUnitJupiter('5.11.0')
+    }
+    integrationTest(JvmTestSuite) {
+    	targets {
+            all {
+                testTask.configure { 
+                	// configure server used for integration tests
+			    	systemProperty "tomee.classifier", "plus"
+			    	systemProperty "tomee.properties", "tomee.mp.scan=all"
+                }
+            }
+        }
+    	
+    	dependencies {
+    		implementation project()
+    		implementation 'org.jboss.arquillian.junit5:arquillian-junit5-container:1.9.1.Final'
+    		implementation 'org.glassfish.jersey.core:jersey-client:3.1.8'
+    		runtimeOnly 'org.apache.tomee:arquillian-tomee-remote:10.0.0-M2'
+    		runtimeOnly 'org.apache.tomee:apache-tomee:10.0.0-M2'
+    	}
+		configurations.integrationTestImplementation {
+			extendsFrom configurations.testImplementation
+		}
+    }
+}
+
+eclipse.wtp.facet { facet name: 'jst.web', version: '6.0' }
