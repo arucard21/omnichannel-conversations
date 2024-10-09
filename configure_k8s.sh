@@ -1,10 +1,12 @@
 #!/bin/sh
+LOCAL_DOCKER_REGISTRY="registry:5000"
+
 helm repo add camel-k https://apache.github.io/camel-k/charts/
 helm repo update
 # Create namespace to use specifically for integrations
 kubectl create namespace integrations
 # Install Camel K
-helm install camel-k --set platform.build.registry.address=registry:5000 camel-k/camel-k --namespace integrations
+helm install camel-k --set platform.build.registry.address=$LOCAL_DOCKER_REGISTRY camel-k/camel-k --namespace integrations
 ## Testing Camel K
 kamel run kamel-test-integration.yaml --dev --namespace integrations
 
